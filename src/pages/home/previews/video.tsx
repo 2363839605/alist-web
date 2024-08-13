@@ -1,9 +1,9 @@
 import { Box } from "@hope-ui/solid"
 import { createSignal, onCleanup, onMount } from "solid-js"
-import { useRouter, useLink } from "~/hooks"
+import { useRouter, useLink, getLinkByDirAndObj } from "~/hooks"
 import { getSettingBool, objStore } from "~/store"
 import { ObjType } from "~/types"
-import { ext, pathDir, pathJoin } from "~/utils"
+import { ext, fsGet, pathDir, pathJoin } from "~/utils"
 import Artplayer from "artplayer"
 import { type Option } from "artplayer/types/option"
 import { type Setting } from "artplayer/types/setting"
@@ -135,7 +135,8 @@ const Preview = () => {
     autoOrientation: true,
     airplay: true,
   }
-  const subtitle = objStore.related.filter((obj) => {
+
+  let subtitle = objStore.related.filter((obj) => {
     for (const ext of [".srt", ".ass", ".vtt"]) {
       if (obj.name.endsWith(ext)) {
         return true
@@ -154,10 +155,8 @@ const Preview = () => {
 
   // TODO: add a switch in manage panel to choose whether to enable `libass-wasm`
   const enableEnhanceAss = true
-
+  let isEnhanceAssMode = false
   if (subtitle.length != 0) {
-    let isEnhanceAssMode = false
-
     // set default subtitle
     const defaultSubtitle = subtitle[0]
     if (enableEnhanceAss && ext(defaultSubtitle.name).toLowerCase() === "ass") {
@@ -174,7 +173,10 @@ const Preview = () => {
         type: ext(defaultSubtitle.name),
       }
     }
+    subtitlePer()
+  }
 
+  function subtitlePer() {
     // render subtitle toggle menu
     const innerMenu: Setting[] = [
       {
@@ -304,6 +306,73 @@ const Preview = () => {
     player.on("ready", () => {
       player.fullscreen = auto_fullscreen
     })
+    if (subtitle.length == 0) {
+      function find(str: string, cha: any, num: number) {
+        let x = str.indexOf(cha)
+        for (let i = 0; i < num; i++) {
+          x = str.indexOf(cha, x + 1)
+        }
+        return x
+      }
+      function setSubtitle(result: any, type: string) {
+        const defaultSubtitle = result.data
+        if (
+          enableEnhanceAss &&
+          ext(defaultSubtitle.name).toLowerCase() === "ass"
+        ) {
+          isEnhanceAssMode = true
+          option.plugins?.push(
+            artplayerPluginAss({
+              // debug: true,
+              subUrl:
+                option.url.slice(0, find(option.url, "/", 2)) +
+                "/d" +
+                subtitlePath +
+                "." +
+                type +
+                "?sign=" +
+                result.data.sign,
+            }),
+          )
+        } else {
+          option.subtitle = {
+            url:
+              option.url.slice(0, find(option.url, "/", 2)) +
+              "/d" +
+              subtitlePath +
+              "." +
+              type +
+              "?sign=" +
+              result.data.sign,
+            type: ext(result.data.name),
+          }
+        }
+        subtitlePer()
+        player.destroy()
+        player = new Artplayer(option)
+      }
+      let subtitlePath =
+        useRouter()
+          .pathname()
+          .slice(0, useRouter().pathname().lastIndexOf("/") + 1) +
+        ".subtitle/" +
+        objStore.obj.name.slice(0, objStore.obj.name.lastIndexOf("."))
+      fsGet(subtitlePath + ".srt").then((result) => {
+        if (result.code == 200) {
+          setSubtitle(result, "srt")
+        }
+      })
+      fsGet(subtitlePath + ".ass").then((result) => {
+        if (result.code == 200) {
+          setSubtitle(result, "ass")
+        }
+      })
+      fsGet(subtitlePath + ".vtt").then((result) => {
+        if (result.code == 200) {
+          setSubtitle(result, "vtt")
+        }
+      })
+    }
     player.on("video:ended", () => {
       if (!autoNext()) return
       next_video()
