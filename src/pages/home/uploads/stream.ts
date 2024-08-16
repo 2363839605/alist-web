@@ -8,6 +8,7 @@ export const StreamUpload: Upload = async (
   setUpload: SetUpload,
   asTask = false,
 ): Promise<Error | undefined> => {
+  console.log("StreamUpload", uploadPath)
   let oldTimestamp = new Date().valueOf()
   let oldLoaded = 0
   const resp: EmptyResp = await r.put("/fs/put", file, {

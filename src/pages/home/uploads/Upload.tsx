@@ -14,21 +14,22 @@ import {
 } from "@hope-ui/solid"
 import { createSignal, For, Show } from "solid-js"
 import { usePath, useRouter, useT } from "~/hooks"
-import { getMainColor } from "~/store"
+import { getMainColor, objStore } from "~/store"
 import {
   RiDocumentFolderUploadFill,
   RiDocumentFileUploadFill,
 } from "solid-icons/ri"
-import { getFileSize, notify, pathJoin } from "~/utils"
+import { fsDirs, fsGet, getFileSize, notify, pathJoin } from "~/utils"
 import { asyncPool } from "~/utils/async_pool"
 import { createStore } from "solid-js/store"
 import { UploadFileProps, StatusBadge } from "./types"
-import { File2Upload, traverseFileTree } from "./util"
+import { File2Upload, dataURLtoBlob, traverseFileTree } from "./util"
 import { SelectWrapper } from "~/components"
 import { getUploads } from "./uploads"
 
 const UploadFile = (props: UploadFileProps) => {
   const t = useT()
+
   return (
     <VStack
       w="$full"
@@ -107,6 +108,7 @@ const Upload = () => {
   const [curUploader, setCurUploader] = createSignal(uploaders[0])
   const handleFile = async (file: File) => {
     const path = file.webkitRelativePath ? file.webkitRelativePath : file.name
+    console.log(path)
     setUpload(path, "status", "uploading")
     const uploadPath = pathJoin(pathname(), path)
     try {
@@ -121,6 +123,34 @@ const Upload = () => {
       if (!err) {
         setUpload(path, "status", "success")
         setUpload(path, "progress", 100)
+        let isVideo = false
+        for (const ext of [
+          ".mp4",
+          ".wmv",
+          ".flv",
+          "mkv",
+          "f4v",
+          "avi",
+          "webm",
+          "rmvb",
+        ]) {
+          if (path.endsWith(ext)) {
+            isVideo = true
+          }
+        }
+        if (isVideo) {
+          fsDirs(pathname() + "/.thumbnails").then((res) => {
+            if (res.code == 200) {
+              fsGet(uploadPath).then((res) => {
+                dataURLtoBlob(
+                  res.data.raw_url,
+                  pathname() + "/.thumbnails/" + path + ".webp",
+                  0.03,
+                )
+              })
+            }
+          })
+        }
       } else {
         setUpload(path, "status", "error")
         setUpload(path, "msg", err.message)

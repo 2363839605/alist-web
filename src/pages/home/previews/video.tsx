@@ -1,9 +1,9 @@
 import { Box } from "@hope-ui/solid"
 import { createSignal, onCleanup, onMount } from "solid-js"
-import { useRouter, useLink, getLinkByDirAndObj } from "~/hooks"
-import { getSettingBool, objStore } from "~/store"
+import { useRouter, useLink } from "~/hooks"
+import { getSettingBool, objStore, password } from "~/store"
 import { ObjType } from "~/types"
-import { ext, fsGet, pathDir, pathJoin } from "~/utils"
+import { ext, fsGet, pathDir, pathJoin, r } from "~/utils"
 import Artplayer from "artplayer"
 import { type Option } from "artplayer/types/option"
 import { type Setting } from "artplayer/types/setting"
@@ -293,7 +293,91 @@ const Preview = () => {
     )
   }
   onMount(() => {
+    /*
+     * 截取视频的第一帧
+     */
+    // function getVideoBase64(url: string,num:number): Promise<string> {
+    //   return new Promise((resolve, reject) => {
+    //     const video = document.createElement("video");
+    //     video.crossOrigin = 'anonymous'; // 处理跨域
+    //     video.src = url;
+    //     video.autoplay = true;
+    //     video.muted = true; // 可选：静音视频以避免自动播放策略阻止
+    //
+    //     // 监听视频加载完成并可以播放
+    //     video.onloadedmetadata = function () {
+    //       // 设置视频当前时间为第二秒
+    //       video.currentTime = video.duration*num;
+    //
+    //       // 监听时间更新事件
+    //       const handleTimeUpdate = function () {
+    //         // 检查是否已到达或超过了第二秒
+    //         if (video.currentTime >=num*video.duration) {
+    //           // 移除时间更新事件监听器
+    //           video.removeEventListener('timeupdate', handleTimeUpdate);
+    //
+    //           // 绘制视频帧到canvas
+    //           const canvas = document.createElement("canvas");
+    //           canvas.width = video.videoWidth; // 使用视频的原始宽度
+    //           canvas.height = video.videoHeight; // 使用视频的原始高度
+    //           const ctx = canvas.getContext("2d");
+    //           if (ctx) {
+    //             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    //
+    //             // 将canvas转换为Base64图片
+    //             const dataURL = canvas.toDataURL('image/webp');
+    //             resolve(dataURL);
+    //             // 如果需要，可以在这里清理视频元素
+    //             video.pause();
+    //             video.remove();
+    //           }
+    //         }
+    //       };
+    //
+    //       video.addEventListener('timeupdate', handleTimeUpdate);
+    //
+    //
+    //       // 可选：监听加载失败事件
+    //       video.onabort = function () {
+    //         reject(new Error('Video loading aborted'));
+    //         // 移除时间更新事件监听器
+    //         video.removeEventListener('timeupdate', handleTimeUpdate);
+    //       };
+    //     };
+    //
+    //     // 通常不需要将视频元素添加到DOM中，除非需要显示视频
+    //     // document.body.appendChild(video);
+    //   });
+    // }
+    //
+    // function dataURLtoBlob(url:any,path:string,num:number) {
+    //   getVideoBase64(url,num).then(async res => {
+    //     // @ts-ignore
+    //     let arr = res.split(","),
+    //       // @ts-ignore
+    //       mime = arr[0].match(/:(.*?);/)[1],
+    //       bstr = atob(arr[1]),
+    //       n = bstr.length,
+    //       u8arr = new Uint8Array(n)
+    //     while (n--) {
+    //       u8arr[n] = bstr.charCodeAt(n)
+    //     }
+    //     let file = new Blob([u8arr], { type: mime })
+    //     await r.put("/fs/put", file, {
+    //       headers: {
+    //         "File-Path": encodeURIComponent(path),
+    //         "As-Task": false,
+    //         "Content-Type": file.type || "application/octet-stream",
+    //         Password: password(),
+    //       },
+    //     })
+    //   })
+    // }
+
     player = new Artplayer(option)
+
+    // @ts-ignore
+
     let auto_fullscreen: boolean
     switch (searchParams["auto_fullscreen"]) {
       case "true":
@@ -305,6 +389,7 @@ const Preview = () => {
     }
     player.on("ready", () => {
       player.fullscreen = auto_fullscreen
+      // dataURLtoBlob(objStore.raw_url,pathname().slice(0,pathname().lastIndexOf('/')+1)+".thumbnails/"+objStore.obj.name+".webp",0.03)
     })
     if (subtitle.length == 0) {
       function find(str: string, cha: any, num: number) {

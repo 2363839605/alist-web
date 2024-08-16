@@ -130,7 +130,7 @@ const Storages = () => {
         </Show>
         <HopeSwitch
           checked={layout() === "table"}
-          onChange={(e) => {
+          onChange={(e: { currentTarget: { checked: any } }) => {
             setLayout(e.currentTarget.checked ? "table" : "grid")
           }}
         >
