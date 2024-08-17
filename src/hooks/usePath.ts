@@ -180,7 +180,25 @@ export const usePath = () => {
     const resp = await getObjs({ path, index, size, force })
     handleRespWithoutNotify(
       resp,
-      (data) => {
+      async (data) => {
+        if (data.content != null)
+          for (const item of data.content) {
+            if (item.thumb !== "") {
+              try {
+                const res = await fsGet(
+                  path + "/.thumbnails/" + item.name + ".webp",
+                )
+                if (res.code === 200) {
+                  item.thumb = res.data.raw_url
+                } else if (res.code === 500) {
+                  item.thumb = ""
+                }
+              } catch (error) {
+                console.error("Error fetching thumbnail:", error)
+              }
+            }
+          }
+
         if (append) {
           appendObjs(data.content)
         } else {

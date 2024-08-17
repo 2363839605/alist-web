@@ -389,6 +389,7 @@ const Preview = () => {
     }
     player.on("ready", () => {
       player.fullscreen = auto_fullscreen
+      //   console.log("加载完成")
       // dataURLtoBlob(objStore.raw_url,pathname().slice(0,pathname().lastIndexOf('/')+1)+".thumbnails/"+objStore.obj.name+".webp",0.03)
     })
     if (subtitle.length == 0) {
@@ -435,6 +436,12 @@ const Preview = () => {
         subtitlePer()
         player.destroy()
         player = new Artplayer(option)
+        //
+        // player.on("ready", () => {
+        //   player.fullscreen = auto_fullscreen
+        //   console.log("加载完成")
+        //   dataURLtoBlob(objStore.raw_url,pathname().slice(0,pathname().lastIndexOf('/')+1)+".thumbnails/"+objStore.obj.name+".webp",0.03)
+        // })
       }
       let subtitlePath =
         useRouter()

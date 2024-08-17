@@ -108,7 +108,6 @@ const Upload = () => {
   const [curUploader, setCurUploader] = createSignal(uploaders[0])
   const handleFile = async (file: File) => {
     const path = file.webkitRelativePath ? file.webkitRelativePath : file.name
-    console.log(path)
     setUpload(path, "status", "uploading")
     const uploadPath = pathJoin(pathname(), path)
     try {
@@ -128,28 +127,61 @@ const Upload = () => {
           ".mp4",
           ".wmv",
           ".flv",
-          "mkv",
-          "f4v",
-          "avi",
-          "webm",
-          "rmvb",
+          ".mkv",
+          ".f4v",
+          ".avi",
+          ".webm",
+          ".rmvb",
         ]) {
           if (path.endsWith(ext)) {
             isVideo = true
           }
         }
         if (isVideo) {
-          fsDirs(pathname() + "/.thumbnails").then((res) => {
-            if (res.code == 200) {
-              fsGet(uploadPath).then((res) => {
-                dataURLtoBlob(
-                  res.data.raw_url,
-                  pathname() + "/.thumbnails/" + path + ".webp",
-                  0.03,
-                )
-              })
+          if (!asTask())
+            fsDirs(pathname() + "/.thumbnails").then((res) => {
+              if (res.code == 200) {
+                fsGet(uploadPath).then((res) => {
+                  dataURLtoBlob(
+                    res.data.raw_url,
+                    pathname() + "/.thumbnails/" + path + ".webp",
+                    0.03,
+                  )
+                })
+              }
+            })
+          else {
+            let arrayHasElement = function (array: any, element: any): boolean {
+              // 判断二维数组array中是否存在一维数组element
+              for (let el of array) {
+                if (el.length === element.length) {
+                  for (let index in el) {
+                    if (el[index] !== element[index]) {
+                      break
+                    }
+                    // @ts-ignore
+                    if (index == el.length - 1) {
+                      // 到最后一个元素都没有出现不相等，就说明这两个数组相等。
+                      return true
+                    }
+                  }
+                }
+              }
+              return false
             }
-          })
+            if (localStorage.getItem("thumbUpload") == null) {
+              localStorage.setItem(
+                "thumbUpload",
+                JSON.stringify([[pathname(), path]]),
+              )
+            }
+            let last = JSON.parse(localStorage.getItem("thumbUpload") as string)
+            if (!arrayHasElement(last, [pathname(), path])) {
+              last.push([pathname(), path])
+              // console.log(last.includes(videoPath+videoName))
+              localStorage.setItem("thumbUpload", JSON.stringify(last))
+            }
+          }
         }
       } else {
         setUpload(path, "status", "error")
