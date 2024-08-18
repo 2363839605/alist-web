@@ -61,41 +61,31 @@ export const File2Upload = (file: File): UploadFileProps => {
     status: "pending",
   }
 }
-/*
- * 截取视频的第一帧
- */
+
 function getVideoBase64(url: string, num: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video")
-    video.crossOrigin = "anonymous" // 处理跨域
+    video.crossOrigin = "anonymous"
     video.src = url
     video.autoplay = true
-    video.muted = true // 可选：静音视频以避免自动播放策略阻止
-
-    // 监听视频加载完成并可以播放
+    video.muted = true
     video.onloadedmetadata = function () {
-      // 设置视频当前时间为第二秒
       video.currentTime = video.duration * num
 
-      // 监听时间更新事件
       const handleTimeUpdate = function () {
-        // 检查是否已到达或超过了第二秒
         if (video.currentTime >= video.duration * num) {
-          // 移除时间更新事件监听器
+
           video.removeEventListener("timeupdate", handleTimeUpdate)
 
-          // 绘制视频帧到canvas
+
           const canvas = document.createElement("canvas")
-          canvas.width = video.videoWidth // 使用视频的原始宽度
-          canvas.height = video.videoHeight // 使用视频的原始高度
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
           const ctx = canvas.getContext("2d")
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-
-            // 将canvas转换为Base64图片
             const dataURL = canvas.toDataURL("image/webp")
             resolve(dataURL)
-            // 如果需要，可以在这里清理视频元素
             video.pause()
             video.remove()
           }
@@ -104,16 +94,12 @@ function getVideoBase64(url: string, num: number): Promise<string> {
 
       video.addEventListener("timeupdate", handleTimeUpdate)
 
-      // 可选：监听加载失败事件
       video.onabort = function () {
         reject(new Error("Video loading aborted"))
-        // 移除时间更新事件监听器
         video.removeEventListener("timeupdate", handleTimeUpdate)
       }
     }
 
-    // 通常不需要将视频元素添加到DOM中，除非需要显示视频
-    // document.body.appendChild(video);
   })
 }
 
@@ -139,6 +125,5 @@ export function dataURLtoBlob(url: any, path: string, num: number) {
         Password: password(),
       },
     })
-    // StreamUpload("http://alist.embyovo.site/TEST", new Blob([u8arr], { type: mime }))
   })
 }
