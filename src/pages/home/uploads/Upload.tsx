@@ -19,13 +19,14 @@ import {
   RiDocumentFolderUploadFill,
   RiDocumentFileUploadFill,
 } from "solid-icons/ri"
-import { fsDirs, fsGet, getFileSize, notify, pathJoin } from "~/utils"
+import { fsDirs, fsGet, getFileSize, notify, pathJoin, r } from "~/utils"
 import { asyncPool } from "~/utils/async_pool"
 import { createStore } from "solid-js/store"
 import { UploadFileProps, StatusBadge } from "./types"
 import { File2Upload, dataURLtoBlob, traverseFileTree } from "./util"
 import { SelectWrapper } from "~/components"
 import { getUploads } from "./uploads"
+import file from "~/pages/home/file/File"
 
 const UploadFile = (props: UploadFileProps) => {
   const t = useT()
@@ -72,7 +73,7 @@ const UploadFile = (props: UploadFileProps) => {
 
 const Upload = () => {
   const t = useT()
-  function AutoUploadThumb(path:string,uploadPath:string){
+  function AutoUploadThumb(path: string, uploadPath: string) {
     let isVideo = false
     for (const ext of [
       ".mp4",
@@ -88,61 +89,16 @@ const Upload = () => {
         isVideo = true
       }
     }
-    if (isVideo) {
-      if (!asTask())
-        fsDirs(pathname() + "/.thumbnails").then((res) => {
-          if (res.code == 200) {
-            fsGet(uploadPath).then((res) => {
-              dataURLtoBlob(
-                res.data.raw_url,
-                pathname() + "/.thumbnails/" + path + ".webp",
-                0.03,
-              )
-            })
-          }
-        })
-      else {
-        let fileName=path
-        let filePath=pathname()
-        console.log(filePath)
-        console.log(isFolder)
-        if (isFolder){
-          fileName=fileName.slice(path.indexOf('/')+1)
-          filePath=filePath+'/'+path.slice(0,path.indexOf("/"))
-          isFolder=false
-        }
-        let arrayHasElement = function (array: any, element: any): boolean {
-          // 判断二维数组array中是否存在一维数组element
-          for (let el of array) {
-            if (el.length === element.length) {
-              for (let index in el) {
-                if (el[index] !== element[index]) {
-                  break
-                }
-                // @ts-ignore
-                if (index == el.length - 1) {
-                  // 到最后一个元素都没有出现不相等，就说明这两个数组相等。
-                  return true
-                }
-              }
-            }
-          }
-          return false
-        }
-        if (localStorage.getItem("thumbUpload") == null) {
-          localStorage.setItem(
-            "thumbUpload",
-            JSON.stringify([[filePath,fileName]]),
+    if (!asTask())
+      if (isVideo) {
+        fsGet(uploadPath + path).then((res) => {
+          dataURLtoBlob(
+            res.data.raw_url,
+            uploadPath + "/.thumbnails/" + path + ".webp",
+            0.03,
           )
-        }
-        let last = JSON.parse(localStorage.getItem("thumbUpload") as string)
-        if (!arrayHasElement(last, [filePath, fileName])) {
-          last.push([filePath, fileName])
-          // console.log(last.includes(videoPath+videoName))
-          localStorage.setItem("thumbUpload", JSON.stringify(last))
-        }
+        })
       }
-    }
   }
   const { pathname } = useRouter()
   const { refresh } = usePath()
@@ -155,11 +111,10 @@ const Upload = () => {
     uploads: [],
   })
   const allDone = () => {
-      return uploadFiles.uploads.every(({ status }) =>
+    return uploadFiles.uploads.every(({ status }) =>
       ["success", "error"].includes(status),
     )
   }
-  let isFolder =false
   let fileInput: HTMLInputElement
   let folderInput: HTMLInputElement
   const handleAddFiles = async (files: File[]) => {
@@ -195,7 +150,16 @@ const Upload = () => {
       if (!err) {
         setUpload(path, "status", "success")
         setUpload(path, "progress", 100)
-        AutoUploadThumb(path,uploadPath)
+        let fileName = path.slice(path.indexOf("/") + 1)
+        let filePath = uploadPath.slice(0, uploadPath.lastIndexOf(fileName))
+        console.log(fileName)
+        console.log(filePath)
+
+        if (pathname() != filePath) {
+          AutoUploadThumb(fileName, filePath)
+        } else {
+          AutoUploadThumb(path, filePath)
+        }
       } else {
         setUpload(path, "status", "error")
         setUpload(path, "msg", err.message)
@@ -336,7 +300,6 @@ const Upload = () => {
                 colorScheme="accent"
                 icon={<RiDocumentFolderUploadFill />}
                 onClick={() => {
-                  isFolder=true
                   folderInput.click()
                 }}
               />
@@ -364,5 +327,4 @@ const Upload = () => {
     </VStack>
   )
 }
-
 export default Upload

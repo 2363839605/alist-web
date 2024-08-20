@@ -77,8 +77,14 @@ const App: Component = () => {
     })
   }
 
-  function dataURLtoBlob(url: any, path: string, num: number,arr1:[]) {
+  function dataURLtoBlob(
+    url: any,
+    filePath: string,
+    fileName: string,
+    num: number,
+  ) {
     getVideoBase64(url, num).then(async (res) => {
+      let path = filePath + "/.thumbnails/" + fileName + ".webp"
       // @ts-ignore
       let arr = res.split(","),
         // @ts-ignore
@@ -98,44 +104,36 @@ const App: Component = () => {
           "Content-Type": file.type || "application/octet-stream",
           Password: password(),
         },
-      }).then((res)=>{
+      }).then((res) => {
         // @ts-ignore
-        if (res.code==200){
-          localStorage.setItem("thumbUpload",JSON.stringify(arr1))
+        if (res.code == 200) {
+          r.post("/fs/saveUploadThumb", {
+            filePath: filePath,
+            fileName: fileName,
+          }).then((res) => {})
         }
       })
     })
   }
   function upLoadThumb() {
-    let temp = JSON.parse(localStorage.getItem("thumbUpload") as string)
-    if (temp != null ) {
-      if (temp.length != 0){
+    r.get("/fs/getUploadThumb").then((res) => {
+      // @ts-ignore
+      if (res.code == 200 && res.data != null) {
+        let temp = res.data
         for (const a of temp) {
-          fsGet(a[0] + "/" + a[1]).then((res) => {
+          fsGet(a.filePath + "/" + a.fileName).then((res) => {
             // console.log("=================================")
             if (res.code == 200) {
-              dataURLtoBlob(
-                res.data.raw_url,
-                a[0] + "/.thumbnails/" + a[1] + ".webp",
-                0.03,
-                temp
-              )
-              temp.shift()
+              dataURLtoBlob(res.data.raw_url, a.filePath, a.fileName, 0.03)
             }
           })
         }
-      }else {
-        localStorage.removeItem("thumbUpload")
       }
-
-    }
-    if (temp==[]){
-      localStorage.removeItem("thumbUpload")
-    }
+    })
   }
   createEffect(() => {
     bus.emit("pathname", pathname())
-    upLoadThumb()
+    if (pathname() == "/") upLoadThumb()
   })
 
   const [err, setErr] = createSignal<string>()
