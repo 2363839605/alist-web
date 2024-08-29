@@ -1,29 +1,29 @@
 import {
-  VStack,
-  Input,
+  Badge,
+  Box,
+  Button,
+  Checkbox,
   Heading,
   HStack,
   IconButton,
-  Checkbox,
-  Text,
-  Badge,
+  Input,
   Progress,
   ProgressIndicator,
-  Button,
-  Box,
+  Text,
+  VStack,
 } from "@hope-ui/solid"
 import { createSignal, For, Show } from "solid-js"
 import { usePath, useRouter, useT } from "~/hooks"
-import { getMainColor, objStore } from "~/store"
+import { getMainColor } from "~/store"
 import {
-  RiDocumentFolderUploadFill,
   RiDocumentFileUploadFill,
+  RiDocumentFolderUploadFill,
 } from "solid-icons/ri"
-import { fsDirs, fsGet, getFileSize, notify, pathJoin, r } from "~/utils"
+import { fsGet, getFileSize, notify, pathJoin } from "~/utils"
 import { asyncPool } from "~/utils/async_pool"
 import { createStore } from "solid-js/store"
-import { UploadFileProps, StatusBadge } from "./types"
-import { File2Upload, dataURLtoBlob, traverseFileTree } from "./util"
+import { StatusBadge, UploadFileProps } from "./types"
+import { dataURLtoBlob, File2Upload, traverseFileTree } from "./util"
 import { SelectWrapper } from "~/components"
 import { getUploads } from "./uploads"
 import file from "~/pages/home/file/File"
@@ -74,31 +74,13 @@ const UploadFile = (props: UploadFileProps) => {
 const Upload = () => {
   const t = useT()
   function AutoUploadThumb(path: string, uploadPath: string) {
-    let isVideo = false
-    for (const ext of [
-      ".mp4",
-      ".wmv",
-      ".flv",
-      ".mkv",
-      ".f4v",
-      ".avi",
-      ".webm",
-      ".rmvb",
-    ]) {
-      if (path.endsWith(ext)) {
-        isVideo = true
-      }
-    }
-    if (!asTask())
-      if (isVideo) {
-        fsGet(uploadPath + path).then((res) => {
-          dataURLtoBlob(
-            res.data.raw_url,
-            uploadPath + "/.thumbnails/" + path + ".webp",
-            0.03,
-          )
-        })
-      }
+    fsGet(uploadPath + path).then((res) => {
+      dataURLtoBlob(
+        res.data.raw_url,
+        uploadPath + "/.thumbnails/" + path + ".webp",
+        0.03,
+      )
+    })
   }
   const { pathname } = useRouter()
   const { refresh } = usePath()
@@ -119,6 +101,16 @@ const Upload = () => {
   let folderInput: HTMLInputElement
   const handleAddFiles = async (files: File[]) => {
     if (files.length === 0) return
+    for (let i=0; i < files.length; i++) {
+      if (asTask()&&files[i].type.startsWith("video/")){
+          if (!files[i].type.endsWith("mp4")||!files[i].type.endsWith("flv")){
+            files[i] = new File([files[i]], files[i].name.slice(0,files[i].name.lastIndexOf("."))+".mp4", {
+              type: files[i].type,
+              lastModified: files[i].lastModified,
+            })
+          }
+      }
+    }
     setUploading(true)
     for (const file of files) {
       const upload = File2Upload(file)
@@ -150,16 +142,16 @@ const Upload = () => {
       if (!err) {
         setUpload(path, "status", "success")
         setUpload(path, "progress", 100)
-        let fileName = path.slice(path.indexOf("/") + 1)
-        let filePath = uploadPath.slice(0, uploadPath.lastIndexOf(fileName))
-        console.log(fileName)
-        console.log(filePath)
-
-        if (pathname() != filePath) {
-          AutoUploadThumb(fileName, filePath)
-        } else {
-          AutoUploadThumb(path, filePath)
+        if (asTask()&&file.type.startsWith("video/")){
+          let fileName = path.slice(path.indexOf("/") + 1)
+          let filePath = uploadPath.slice(0, uploadPath.lastIndexOf(fileName))
+          if (pathname() != filePath) {
+            AutoUploadThumb(fileName, filePath)
+          } else {
+            AutoUploadThumb(path, filePath)
+          }
         }
+
       } else {
         setUpload(path, "status", "error")
         setUpload(path, "msg", err.message)
