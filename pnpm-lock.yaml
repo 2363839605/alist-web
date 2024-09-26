@@ -16,7 +16,7 @@ importers:
         version: 2.1.1
       '@hope-ui/solid':
         specifier: 0.6.7
-        version: 0.6.7(@stitches/core@1.2.8)(solid-js@1.4.8)(solid-transition-group@0.0.12)
+        version: 0.6.7(@stitches/core@1.2.8)(solid-js@1.4.8)(solid-transition-group@0.0.12(solid-js@1.4.8))
       '@monaco-editor/loader':
         specifier: ^1.4.0
         version: 1.4.0(monaco-editor@0.50.0)
@@ -42,8 +42,8 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1
       artplayer:
-        specifier: ^5.0.9
-        version: 5.0.9
+        specifier: ^5.1.7
+        version: 5.1.7
       artplayer-plugin-danmuku:
         specifier: ^5.0.1
         version: 5.0.1
@@ -103,7 +103,7 @@ importers:
         version: 0.2.0
       solid-contextmenu:
         specifier: 0.0.2
-        version: 0.0.2(solid-js@1.4.8)(solid-transition-group@0.0.12)
+        version: 0.0.2(solid-js@1.4.8)(solid-transition-group@0.0.12(solid-js@1.4.8))
       solid-icons:
         specifier: ^1.0.1
         version: 1.0.1(solid-js@1.4.8)
@@ -143,7 +143,7 @@ importers:
         version: 2.0.1
       '@vitejs/plugin-legacy':
         specifier: ^2.0.1
-        version: 2.0.1(terser@5.14.2)(vite@3.0.8)
+        version: 2.0.1(terser@5.14.2)(vite@3.0.8(terser@5.14.2))
       husky:
         specifier: ^8.0.2
         version: 8.0.2
@@ -170,7 +170,7 @@ importers:
         version: 0.4.4
       vite-plugin-solid:
         specifier: ^2.3.0
-        version: 2.3.0(solid-js@1.4.8)(vite@3.0.8)
+        version: 2.3.0(solid-js@1.4.8)(vite@3.0.8(terser@5.14.2))
 
 packages:
 
@@ -587,8 +587,8 @@ packages:
   artplayer-plugin-danmuku@5.0.1:
     resolution: {integrity: sha512-b6/Y4/+X0rNmnqS5+zzQgow+WW4iVT8eFv4LAUzJgIyORIcf5Gn00Dy0PZ+kwGb1VJy0CUCRK6gVVvh0tWsRAg==}
 
-  artplayer@5.0.9:
-    resolution: {integrity: sha512-IM/DShYdmKFEA9jl08LYbTK2Jfz9s7qIjEH0xWjnxvVArUKZZKcoqwr6i54U0c4grtc/Uvb4wtCd78kvtSVlgw==}
+  artplayer@5.1.7:
+    resolution: {integrity: sha512-N/QdNlTwsIHUsWOHMPj0pq97v3qmgXZHfhy1q7I+8YN3/XakJiJJyVJgGaeBjU+y/fUIrzBhwpBaX+NFwK9/qw==}
 
   asciinema-player@3.6.3:
     resolution: {integrity: sha512-62aDgLpbuduhmpFfNgPOzf6fOluACLsftVnjpWJjUXX6dqhqTckFqWoJ+ayA0XjSlZ9l9wXTcJqRqvAAIpMblg==}
@@ -2189,7 +2189,7 @@ snapshots:
 
   '@github/webauthn-json@2.1.1': {}
 
-  '@hope-ui/solid@0.6.7(@stitches/core@1.2.8)(solid-js@1.4.8)(solid-transition-group@0.0.12)':
+  '@hope-ui/solid@0.6.7(@stitches/core@1.2.8)(solid-js@1.4.8)(solid-transition-group@0.0.12(solid-js@1.4.8))':
     dependencies:
       '@floating-ui/dom': 0.4.4
       '@stitches/core': 1.2.8
@@ -2386,7 +2386,7 @@ snapshots:
 
   '@viselect/vanilla@3.5.0': {}
 
-  '@vitejs/plugin-legacy@2.0.1(terser@5.14.2)(vite@3.0.8)':
+  '@vitejs/plugin-legacy@2.0.1(terser@5.14.2)(vite@3.0.8(terser@5.14.2))':
     dependencies:
       '@babel/standalone': 7.18.12
       core-js: 3.24.1
@@ -2431,7 +2431,7 @@ snapshots:
 
   artplayer-plugin-danmuku@5.0.1: {}
 
-  artplayer@5.0.9:
+  artplayer@5.1.7:
     dependencies:
       option-validator: 2.0.6
 
@@ -3658,7 +3658,7 @@ snapshots:
 
   smoothscroll@0.4.0: {}
 
-  solid-contextmenu@0.0.2(solid-js@1.4.8)(solid-transition-group@0.0.12):
+  solid-contextmenu@0.0.2(solid-js@1.4.8)(solid-transition-group@0.0.12(solid-js@1.4.8)):
     dependencies:
       clsx: 1.2.1
       mitt: 3.0.0
@@ -3879,7 +3879,7 @@ snapshots:
     dependencies:
       node-html-parser: 5.4.1
 
-  vite-plugin-solid@2.3.0(solid-js@1.4.8)(vite@3.0.8):
+  vite-plugin-solid@2.3.0(solid-js@1.4.8)(vite@3.0.8(terser@5.14.2)):
     dependencies:
       '@babel/core': 7.18.10
       '@babel/preset-typescript': 7.18.6(@babel/core@7.18.10)
@@ -3897,9 +3897,9 @@ snapshots:
       postcss: 8.4.16
       resolve: 1.22.1
       rollup: 2.77.3
-      terser: 5.14.2
     optionalDependencies:
       fsevents: 2.3.3
+      terser: 5.14.2
 
   web-namespaces@2.0.1: {}
 

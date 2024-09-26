@@ -60,7 +60,7 @@ export const GridItem = (props: { obj: StoreObj; index: number }) => {
         rounded="$lg"
         transition="all 0.3s"
         _hover={{
-          transform: "scale(1.06)",
+          transform: "scale(1.08)",
           bgColor: hoverColor(),
         }}
         as={LinkWithPush}
@@ -106,7 +106,7 @@ export const GridItem = (props: { obj: StoreObj; index: number }) => {
       >
         <Center
           class="item-thumbnail"
-          h={`${parseInt(local["grid_item_size"])}px`}
+          h={`${parseInt(local["grid_item_size"]) + 10}px`}
           w="$full"
           on:dblclick={(e: MouseEvent) => {
             if (!isMouseSupported()) return

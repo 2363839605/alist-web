@@ -56,7 +56,9 @@ const App: Component = () => {
       video.onloadedmetadata = function () {
         video.currentTime = video.duration * num
         const handleTimeUpdate = function () {
-          if (video.currentTime >= video.duration * num) {
+          if (
+            video.currentTime.toFixed(2) >= (video.duration * num).toFixed(2)
+          ) {
             video.removeEventListener("timeupdate", handleTimeUpdate)
             const canvas = document.createElement("canvas")
             canvas.width = video.videoWidth
@@ -71,7 +73,6 @@ const App: Component = () => {
             }
           }
         }
-
         video.addEventListener("timeupdate", handleTimeUpdate)
       }
     })
@@ -122,7 +123,6 @@ const App: Component = () => {
         let temp = res.data
         for (const a of temp) {
           fsGet(a.filePath + "/" + a.fileName).then((res) => {
-            // console.log("=================================")
             if (res.code == 200) {
               dataURLtoBlob(res.data.raw_url, a.filePath, a.fileName, 0.03)
             }

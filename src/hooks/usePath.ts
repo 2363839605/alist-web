@@ -183,15 +183,22 @@ export const usePath = () => {
       async (data) => {
         if (data.content != null)
           for (const item of data.content) {
-            if (item.thumb !== "") {
+            if (item.thumb !== "" && item.name.endsWith(".mp4")) {
               try {
                 const res = await fsGet(
-                  path + "/.thumbnails/" + item.name + ".webp",
+                  path + "/.thumbnails/" + item.name + ".gif",
                 )
                 if (res.code === 200) {
                   item.thumb = res.data.raw_url
                 } else if (res.code === 500) {
-                  item.thumb = ""
+                  const res = await fsGet(
+                    path + "/.thumbnails/" + item.name + ".webp",
+                  )
+                  if (res.code === 200) {
+                    item.thumb = res.data.raw_url
+                  } else {
+                    item.thumb = ""
+                  }
                 }
               } catch (error) {
                 console.error("Error fetching thumbnail:", error)

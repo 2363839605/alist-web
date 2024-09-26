@@ -3,6 +3,7 @@ import { defineConfig } from "vite"
 import solidPlugin from "vite-plugin-solid"
 import legacy from "@vitejs/plugin-legacy"
 import { dynamicBase } from "vite-plugin-dynamic-base"
+import { viteStaticCopy } from "vite-plugin-static-copy"
 
 export default defineConfig({
   resolve: {
