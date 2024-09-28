@@ -3,8 +3,15 @@ import { onCleanup } from "solid-js"
 import { ModalFolderChoose } from "~/components"
 import { useFetch, usePath, useRouter } from "~/hooks"
 import { selectedObjs } from "~/store"
-import { bus, fsCopy, fsMove, handleRespWithNotifySuccess } from "~/utils"
-
+import {
+  bus,
+  fsCopy,
+  fsMkdir,
+  fsMove,
+  handleRespWithNotifySuccess,
+  pathJoin,
+} from "~/utils"
+const [mk] = useFetch(fsMkdir)
 export const Copy = () => {
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsCopy)
@@ -64,6 +71,37 @@ export const Move = () => {
           dst,
           selectedObjs().map((obj) => obj.name),
         )
+        if (
+          selectedObjs()
+            .map((obj) => obj.name)
+            .toString()
+            .endsWith(".mp4")
+        ) {
+          for (let item of [".gif", ".webp"]) {
+            const resp1 = await ok(
+              pathname() + "/.thumbnails",
+              dst + "/.thumbnails",
+              [
+                selectedObjs()
+                  .map((obj) => obj.name)
+                  .toString() + item,
+              ],
+            )
+            if (resp1.code == 500) {
+              if (resp1.message.includes("dst dir")) {
+                const resp = await fsMkdir(dst + "/.thumbnails")
+                if (resp.code == 200) {
+                  await ok(pathname() + "/.thumbnails", dst + "/.thumbnails", [
+                    selectedObjs()
+                      .map((obj) => obj.name)
+                      .toString() + item,
+                  ])
+                }
+              }
+            }
+          }
+        }
+
         handleRespWithNotifySuccess(resp, () => {
           refresh()
           onClose()
