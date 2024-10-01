@@ -57,6 +57,16 @@ export const Delete = () => {
                 selectedObjs().map((obj) => obj.name),
               )
               handleRespWithNotifySuccess(resp, () => {
+                if (
+                  selectedObjs()
+                    .map((obj) => obj.name)
+                    .toString()
+                    .endsWith(".mp4")
+                )
+                  ok(
+                    pathname() + "/.thumbnails",
+                    selectedObjs().map((obj) => obj.name + ".webp"),
+                  )
                 refresh()
                 onClose()
               })

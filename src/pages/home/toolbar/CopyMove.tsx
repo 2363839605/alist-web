@@ -9,9 +9,7 @@ import {
   fsMkdir,
   fsMove,
   handleRespWithNotifySuccess,
-  pathJoin,
 } from "~/utils"
-const [mk] = useFetch(fsMkdir)
 export const Copy = () => {
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsCopy)
@@ -87,16 +85,14 @@ export const Move = () => {
                   .toString() + item,
               ],
             )
-            if (resp1.code == 500) {
-              if (resp1.message.includes("dst dir")) {
-                const resp = await fsMkdir(dst + "/.thumbnails")
-                if (resp.code == 200) {
-                  await ok(pathname() + "/.thumbnails", dst + "/.thumbnails", [
-                    selectedObjs()
-                      .map((obj) => obj.name)
-                      .toString() + item,
-                  ])
-                }
+            if (resp1.code == 500 && resp1.message.includes("dst dir")) {
+              const resp = await fsMkdir(dst + "/.thumbnails")
+              if (resp.code == 200) {
+                await ok(pathname() + "/.thumbnails", dst + "/.thumbnails", [
+                  selectedObjs()
+                    .map((obj) => obj.name)
+                    .toString() + item,
+                ])
               }
             }
           }

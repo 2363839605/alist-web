@@ -113,9 +113,7 @@ const Upload = () => {
         if (!files[i].type.endsWith("mp4") || !files[i].type.endsWith("flv")) {
           files[i] = new File(
             [files[i]],
-            files[i].name
-              .slice(0, files[i].name.lastIndexOf("."))
-              .replace(/[\[\]]/g, "") + ".mp4",
+            files[i].name.slice(0, files[i].name.lastIndexOf(".")) + ".mp4",
             {
               type: files[i].type,
               lastModified: files[i].lastModified,
