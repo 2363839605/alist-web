@@ -123,9 +123,24 @@ const App: Component = () => {
         let temp = res.data
         for (const a of temp) {
           fsGet(a.filePath + "/" + a.fileName).then((res) => {
-            if (res.code == 200) {
-              dataURLtoBlob(res.data.raw_url, a.filePath, a.fileName, 0.03)
-            }
+            if (res.code == 200)
+              fsGet(a.filePath + "/.thumbnails/" + a.fileName + ".webp").then(
+                (res1) => {
+                  if (res1.code == 200 && res1.message == "success") {
+                    r.post("/fs/saveUploadThumb", {
+                      filePath: a.filePath,
+                      fileName: a.fileName,
+                    }).then((res) => {})
+                  } else {
+                    dataURLtoBlob(
+                      res.data.raw_url,
+                      a.filePath,
+                      a.fileName,
+                      0.03,
+                    )
+                  }
+                },
+              )
           })
         }
       }
