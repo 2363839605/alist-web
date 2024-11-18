@@ -74,9 +74,7 @@ function getVideoBase64(url: string, num: number): Promise<string> {
 
       const handleTimeUpdate = function () {
         if (video.currentTime >= video.duration * num) {
-
           video.removeEventListener("timeupdate", handleTimeUpdate)
-
 
           const canvas = document.createElement("canvas")
           canvas.width = video.videoWidth
@@ -99,7 +97,6 @@ function getVideoBase64(url: string, num: number): Promise<string> {
         video.removeEventListener("timeupdate", handleTimeUpdate)
       }
     }
-
   })
 }
 
