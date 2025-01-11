@@ -471,6 +471,7 @@ const Preview = () => {
     })
   })
   onCleanup(() => {
+    if (player && player.video) player.video.src = ""
     player?.destroy()
   })
   const [autoNext, setAutoNext] = createSignal()

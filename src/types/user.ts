@@ -36,8 +36,7 @@ export const UserMethods = {
   is_admin: (user: User) => user.role === UserRole.ADMIN,
   is_general: (user: User) => user.role === UserRole.GENERAL,
   can: (user: User, permission: number) => {
-    let adminPrivilege = UserMethods.is_admin(user) && permission < 10
-    return adminPrivilege || ((user.permission >> permission) & 1) == 1
+    return ((user.permission >> permission) & 1) == 1
   },
   // can_see_hides: (user: User) =>
   //   UserMethods.is_admin(user) || (user.permission & 1) == 1,
