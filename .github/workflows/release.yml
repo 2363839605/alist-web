@@ -75,7 +75,7 @@ jobs:
           github_token: ${{ secrets.MY_TOKEN }}
           branch: main
           directory: web-dist
-          repository: alist-org/web-dist
+          repository: 2363839605/web-dist
 
       - name: Release
         uses: softprops/action-gh-release@v1
