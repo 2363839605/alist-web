@@ -76,6 +76,7 @@ jobs:
           branch: main
           directory: web-dist
           repository: 2363839605/web-dist
+          force: true
 
       - name: Release
         uses: softprops/action-gh-release@v1
