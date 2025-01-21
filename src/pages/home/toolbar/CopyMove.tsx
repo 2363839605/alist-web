@@ -1,7 +1,7 @@
-import { createDisclosure } from "@hope-ui/solid"
-import { onCleanup } from "solid-js"
+import { Checkbox, createDisclosure } from "@hope-ui/solid"
+import { createSignal, onCleanup } from "solid-js"
 import { ModalFolderChoose } from "~/components"
-import { useFetch, usePath, useRouter } from "~/hooks"
+import { useFetch, usePath, useRouter, useT } from "~/hooks"
 import { selectedObjs } from "~/store"
 import {
   bus,
@@ -11,13 +11,16 @@ import {
   handleRespWithNotifySuccess,
 } from "~/utils"
 export const Copy = () => {
+  const t = useT()
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsCopy)
   const { pathname } = useRouter()
   const { refresh } = usePath()
+  const [overwrite, setOverwrite] = createSignal(false)
   const handler = (name: string) => {
     if (name === "copy") {
       onOpen()
+      setOverwrite(false)
     }
   }
   bus.on("tool", handler)
@@ -26,14 +29,27 @@ export const Copy = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}
+      footerSlot={
+        <Checkbox
+          mr="auto"
+          checked={overwrite()}
+          onChange={() => {
+            setOverwrite(!overwrite())
+          }}
+        >
+          {t("home.overwrite_existing")}
+        </Checkbox>
+      }
       onSubmit={async (dst) => {
         const resp = await ok(
           pathname(),
           dst,
           selectedObjs().map((obj) => obj.name),
+          overwrite(),
         )
         handleRespWithNotifySuccess(resp, () => {
           refresh()
@@ -45,13 +61,16 @@ export const Copy = () => {
 }
 
 export const Move = () => {
+  const t = useT()
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsMove)
   const { pathname } = useRouter()
   const { refresh } = usePath()
+  const [overwrite, setOverwrite] = createSignal(false)
   const handler = (name: string) => {
     if (name === "move") {
       onOpen()
+      setOverwrite(false)
     }
   }
   bus.on("tool", handler)
@@ -60,14 +79,27 @@ export const Move = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}
+      footerSlot={
+        <Checkbox
+          mr="auto"
+          checked={overwrite()}
+          onChange={() => {
+            setOverwrite(!overwrite())
+          }}
+        >
+          {t("home.overwrite_existing")}
+        </Checkbox>
+      }
       onSubmit={async (dst) => {
         const resp = await ok(
           pathname(),
           dst,
           selectedObjs().map((obj) => obj.name),
+          overwrite(),
         )
         if (
           selectedObjs()

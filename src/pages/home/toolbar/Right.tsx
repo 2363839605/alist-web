@@ -3,7 +3,7 @@ import { createMemo, Show } from "solid-js"
 import { RightIcon } from "./Icon"
 import { CgMoreO } from "solid-icons/cg"
 import { TbCheckbox } from "solid-icons/tb"
-import { objStore, State, toggleCheckbox, userCan } from "~/store"
+import { objStore, selectAll, State, toggleCheckbox, userCan } from "~/store"
 import { bus } from "~/utils"
 import { operations } from "./operations"
 import { IoMagnetOutline } from "solid-icons/io"
@@ -100,6 +100,7 @@ export const Right = () => {
                 as={operations.batch_rename.icon}
                 tips="batch_rename"
                 onClick={() => {
+                  selectAll(true)
                   bus.emit("tool", "batchRename")
                 }}
               />

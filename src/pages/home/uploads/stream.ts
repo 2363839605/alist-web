@@ -7,6 +7,7 @@ export const StreamUpload: Upload = async (
   file: File,
   setUpload: SetUpload,
   asTask = false,
+  overwrite = false,
 ): Promise<Error | undefined> => {
   console.log("StreamUpload", uploadPath)
   let oldTimestamp = new Date().valueOf()
@@ -18,6 +19,7 @@ export const StreamUpload: Upload = async (
       "Content-Type": file.type || "application/octet-stream",
       "Last-Modified": file.lastModified,
       Password: password(),
+      Overwrite: overwrite.toString(),
     },
     onUploadProgress: (progressEvent) => {
       if (progressEvent.total) {

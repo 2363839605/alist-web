@@ -8,13 +8,19 @@ import {
   useColorModeValue,
   VStack,
 } from "@hope-ui/solid"
-import { LinkWithBase } from "~/components"
-import { usePath, useRouter, useT } from "~/hooks"
-import { password, setPassword } from "~/store"
+import { useRouter, useT } from "~/hooks"
+import { JSXElement } from "solid-js"
 
-const Password = () => {
+type PasswordProps = {
+  title: string
+  password: () => string
+  setPassword: (s: string) => void
+  enterCallback: () => void
+  children?: JSXElement
+}
+
+const Password = (props: PasswordProps) => {
   const t = useT()
-  const { refresh } = usePath()
   const { back } = useRouter()
   return (
     <VStack
@@ -26,17 +32,17 @@ const Password = () => {
       spacing="$3"
       alignItems="start"
     >
-      <Heading>{t("home.input_password")}</Heading>
+      <Heading>{props.title}</Heading>
       <Input
         type="password"
-        value={password()}
+        value={props.password()}
         background={useColorModeValue("$neutral3", "$neutral2")()}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            refresh(true)
+            props.enterCallback()
           }
         }}
-        onInput={(e) => setPassword(e.currentTarget.value)}
+        onInput={(e) => props.setPassword(e.currentTarget.value)}
       />
       <HStack w="$full" justifyContent="space-between">
         <Flex
@@ -45,20 +51,15 @@ const Password = () => {
           direction={{ "@initial": "column", "@sm": "row" }}
           columnGap="$1"
         >
-          <Text>{t("global.have_account")}</Text>
-          <Text
-            color="$info9"
-            as={LinkWithBase}
-            href={`/@login?redirect=${encodeURIComponent(location.pathname)}`}
-          >
-            {t("global.go_login")}
-          </Text>
+          {props.children}
         </Flex>
         <HStack spacing="$2">
           <Button colorScheme="neutral" onClick={back}>
             {t("global.back")}
           </Button>
-          <Button onClick={() => refresh(true)}>{t("global.ok")}</Button>
+          <Button onClick={() => props.enterCallback()}>
+            {t("global.ok")}
+          </Button>
         </HStack>
       </HStack>
     </VStack>
