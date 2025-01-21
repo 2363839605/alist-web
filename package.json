@@ -64,7 +64,7 @@
     "@types/qrcode": "^1.5.5",
     "@viselect/vanilla": "^3.5.0",
     "aplayer": "^1.10.1",
-    "artplayer": "^5.1.7",
+    "artplayer": "^5.2.2",
     "artplayer-plugin-danmuku": "^5.0.1",
     "asciinema-player": "^3.6.3",
     "axios": "^1.0.0",
