@@ -337,7 +337,7 @@ const Upload = () => {
                 {t("home.overwrite_existing")}
               </Checkbox>
               <Checkbox
-                checked={rapid()}
+                checked={!rapid()}
                 onChange={() => {
                   setRapid(!rapid())
                 }}
