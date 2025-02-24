@@ -334,7 +334,7 @@ const Upload = () => {
                   setOverwrite(!overwrite())
                 }}
               >
-                {t("home.overwrite_existing")}
+                {t("home.conflict_policy.overwrite_existing")}
               </Checkbox>
               <Checkbox
                 checked={!rapid()}

@@ -32,7 +32,6 @@ export const Error = (props: {
     },
     props,
   )
-  console.log(merged.h)
   return (
     <Center h={merged.h} p="$2" flexDirection="column">
       <Box

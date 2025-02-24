@@ -46,6 +46,8 @@ const Preview = () => {
     }
   }
   let player: Artplayer
+  let flvPlayer: flvjs.Player
+  let hlsPlayer: Hls
   let option: Option = {
     id: pathname(),
     container: "#video-player",
@@ -107,7 +109,7 @@ const Preview = () => {
     type: ext(objStore.obj.name),
     customType: {
       flv: function (video: HTMLMediaElement, url: string) {
-        const flvPlayer = flvjs.createPlayer(
+        flvPlayer = flvjs.createPlayer(
           {
             type: "flv",
             url: url,
@@ -118,9 +120,9 @@ const Preview = () => {
         flvPlayer.load()
       },
       m3u8: function (video: HTMLMediaElement, url: string) {
-        const hls = new Hls()
-        hls.loadSource(url)
-        hls.attachMedia(video)
+        hlsPlayer = new Hls()
+        hlsPlayer.loadSource(url)
+        hlsPlayer.attachMedia(video)
         if (!video.src) {
           video.src = url
         }
@@ -474,6 +476,8 @@ const Preview = () => {
   onCleanup(() => {
     if (player && player.video) player.video.src = ""
     player?.destroy()
+    flvPlayer?.destroy()
+    hlsPlayer?.destroy()
   })
   const [autoNext, setAutoNext] = createSignal()
   return (
