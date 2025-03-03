@@ -6,7 +6,7 @@ cat package.json
 
 # build
 pnpm install
-pnpm i18n:release
+pnpm i18n:build
 pnpm build
 cp -r dist ../
 cd ..
