@@ -83,3 +83,4 @@ jobs:
         with:
           files: compress/*
           tag_name: latest
+          prerelease: false
