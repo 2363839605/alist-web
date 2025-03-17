@@ -143,14 +143,8 @@
     "open_item_on_checkbox": "在复选框上打开选项",
     "open_item_on_checkbox_options": {
       "direct": "直接打开",
-      "disable_while_checked": "选中时禁用",
-      "with_ctrl": "按住 Ctrl/Command 按键打开",
-      "with_alt": "按住 Alt/Option 按键打开"
-    },
-    "select_with_mouse": "在复选框关闭时使用鼠标框选",
-    "select_with_mouse_options": {
-      "disabled": "停用",
-      "open_item_with_dblclick": "双击打开"
+      "dblclick": "双击",
+      "disable_while_checked": "选中时禁用"
     }
   },
   "package_download": {
