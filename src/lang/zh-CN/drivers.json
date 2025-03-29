@@ -144,6 +144,7 @@
     "url": "链接"
   },
   "AList V3": {
+    "forward_archive_requests": "转发解压请求",
     "meta_password": "元信息密码",
     "pass_ua_to_upsteam": "传递UA至上游",
     "password": "密码",
@@ -159,7 +160,8 @@
     "download_part_size-tips": "需要启用代理。单位：KB",
     "paths": "路径",
     "protect_same_name": "保护同名",
-    "protect_same_name-tips": "保护同名的文件不被删除或重命名"
+    "protect_same_name-tips": "保护同名的文件不被删除或重命名",
+    "writable": "可写"
   },
   "Aliyundrive": {
     "internal_upload": "内部上传",
@@ -356,6 +358,10 @@
     "secret_access_key": "安全访问密钥",
     "session_token": "会话令牌",
     "sign_url_expire": "签名链接有效期"
+  },
+  "Doubao": {
+    "cookie": "Cookie",
+    "root_folder_id": "根文件夹ID"
   },
   "Dropbox": {
     "client_id": "客户端ID",
@@ -1077,6 +1083,7 @@
     "Cloudreve": {},
     "Crypt": {},
     "Doge": {},
+    "Doubao": {},
     "Dropbox": {},
     "FTP": {},
     "FebBox": {},
@@ -1155,6 +1162,7 @@
     "Cloudreve": "Cloudreve",
     "Crypt": "Crypt",
     "Doge": "多吉云",
+    "Doubao": "豆包",
     "Dropbox": "Dropbox",
     "FTP": "FTP",
     "FebBox": "FebBox",
