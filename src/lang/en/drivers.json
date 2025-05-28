@@ -22,6 +22,8 @@
     "root_folder_id": "Root folder id"
   },
   "115 Open": {
+    "limit_rate": "Limit rate",
+    "limit_rate-tips": "limit all api request rate ([limit]r/1s)",
     "order_by": "Order by",
     "order_bys": {
       "file_name": "File name",
@@ -87,6 +89,8 @@
     "cloud_id": "Cloud id",
     "custom_upload_part_size": "Custom upload part size",
     "custom_upload_part_size-tips": "0 for auto",
+    "report_real_size": "Report real size",
+    "report_real_size-tips": "Enable to report the real file size during upload",
     "root_folder_id": "Root folder id",
     "type": "Type",
     "types": {
@@ -94,7 +98,9 @@
       "group": "Group",
       "personal": "Personal",
       "personal_new": "Personal new"
-    }
+    },
+    "use_large_thumbnail": "Use large thumbnail",
+    "use_large_thumbnail-tips": "Enable to use large thumbnail for images"
   },
   "189Cloud": {
     "cookie": "Cookie",
@@ -240,6 +246,16 @@
     "share_id": "Share id",
     "share_pwd": "Share pwd"
   },
+  "Azure Blob Storage": {
+    "access_key": "Access key",
+    "access_key-tips": "The access key for Azure Storage, used for authentication. https://learn.microsoft.com/azure/storage/common/storage-account-keys-manage",
+    "container_name": "Container name",
+    "container_name-tips": "The name of the container in Azure Storage (created in the Azure portal). https://learn.microsoft.com/azure/storage/blobs/blob-containers-portal",
+    "endpoint": "Endpoint",
+    "endpoint-tips": "e.g. https://accountname.blob.core.windows.net/. The full endpoint URL for Azure Storage, including the unique storage account name (3 ~ 24 numbers and lowercase letters only).",
+    "sign_url_expire": "Sign url expire",
+    "sign_url_expire-tips": "The expiration time for SAS URLs, in hours."
+  },
   "BaiduNetdisk": {
     "client_id": "Client id",
     "client_secret": "Client secret",
@@ -249,9 +265,11 @@
     "download_api": "Download api",
     "download_apis": {
       "crack": "Crack",
+      "crack_video": "Crack video",
       "official": "Official"
     },
     "low_bandwith_upload_mode": "Low bandwith upload mode",
+    "only_list_video_file": "Only list video file",
     "order_by": "Order by",
     "order_bys": {
       "name": "Name",
@@ -301,6 +319,30 @@
     "custom_ua": "Custom ua",
     "enable_thumb_and_folder_size": "Enable thumb and folder size",
     "password": "Password",
+    "root_folder_path": "Root folder path",
+    "username": "Username"
+  },
+  "Cloudreve V4": {
+    "access_token": "Access token",
+    "address": "Address",
+    "custom_ua": "Custom ua",
+    "enable_folder_size": "Enable folder size",
+    "enable_thumb": "Enable thumb",
+    "enable_version_upload": "Enable version upload",
+    "order_by": "Order by",
+    "order_bys": {
+      "created_at": "Created at",
+      "name": "Name",
+      "size": "Size",
+      "updated_at": "Updated at"
+    },
+    "order_direction": "Order direction",
+    "order_directions": {
+      "asc": "Asc",
+      "desc": "Desc"
+    },
+    "password": "Password",
+    "refresh_token": "Refresh token",
     "root_folder_path": "Root folder path",
     "username": "Username"
   },
@@ -361,7 +403,18 @@
   },
   "Doubao": {
     "cookie": "Cookie",
-    "root_folder_id": "Root folder id"
+    "download_api": "Download api",
+    "download_apis": {
+      "get_download_info": "Get download info",
+      "get_file_url": "Get file url"
+    },
+    "root_folder_id": "Root folder id",
+    "upload_thread": "Upload thread"
+  },
+  "DoubaoShare": {
+    "cookie": "Cookie",
+    "root_folder_path": "Root folder path",
+    "share_ids": "Share ids"
   },
   "Dropbox": {
     "client_id": "Client id",
@@ -481,6 +534,12 @@
   "IPFS API": {
     "endpoint": "Endpoint",
     "gateway": "Gateway",
+    "mode": "Mode",
+    "modes": {
+      "ipfs": "Ipfs",
+      "ipns": "Ipns",
+      "mfs": "Mfs"
+    },
     "root_folder_path": "Root folder path"
   },
   "KodBox": {
@@ -791,6 +850,9 @@
   },
   "Thunder": {
     "captcha_token": "Captcha token",
+    "credit_key": "Credit key",
+    "credit_key-tips": "credit key,used for login",
+    "device_id": "Device id",
     "password": "Password",
     "root_folder_id": "Root folder id",
     "username": "Username"
@@ -858,6 +920,8 @@
     "client_id": "Client id",
     "client_secret": "Client secret",
     "client_version": "Client version",
+    "credit_key": "Credit key",
+    "credit_key-tips": "credit key,used for login",
     "device_id": "Device id",
     "download_user_agent": "Download user agent",
     "login_type": "Login type",
@@ -1076,14 +1140,17 @@
     },
     "AliyundriveOpen": {},
     "AliyundriveShare": {},
+    "Azure Blob Storage": {},
     "BaiduNetdisk": {},
     "BaiduPhoto": {},
     "BaiduShare": {},
     "ChaoXingGroupDrive": {},
     "Cloudreve": {},
+    "Cloudreve V4": {},
     "Crypt": {},
     "Doge": {},
     "Doubao": {},
+    "DoubaoShare": {},
     "Dropbox": {},
     "FTP": {},
     "FebBox": {},
@@ -1155,14 +1222,17 @@
     "Aliyundrive": "Aliyundrive",
     "AliyundriveOpen": "AliyundriveOpen",
     "AliyundriveShare": "AliyundriveShare",
+    "Azure Blob Storage": "Azure Blob Storage",
     "BaiduNetdisk": "BaiduNetdisk",
     "BaiduPhoto": "BaiduPhoto",
     "BaiduShare": "BaiduShare",
     "ChaoXingGroupDrive": "ChaoXingGroupDrive",
     "Cloudreve": "Cloudreve",
+    "Cloudreve V4": "Cloudreve V4",
     "Crypt": "Crypt",
     "Doge": "Doge",
     "Doubao": "Doubao",
+    "DoubaoShare": "DoubaoShare",
     "Dropbox": "Dropbox",
     "FTP": "FTP",
     "FebBox": "FebBox",
