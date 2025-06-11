@@ -1,7 +1,7 @@
 import { Box } from "@hope-ui/solid"
 import { createSignal, onCleanup, onMount } from "solid-js"
 import { useRouter, useLink } from "~/hooks"
-import {getMainColor, getSettingBool, objStore} from "~/store"
+import { getMainColor, getSettingBool, objStore } from "~/store"
 import { ObjType } from "~/types"
 import { ext, fsGet, pathDir, pathJoin, r } from "~/utils"
 import Artplayer from "artplayer"
