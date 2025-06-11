@@ -1,53 +1,43 @@
 #audio-player {
   border-radius: 8px;
 }
-.hope-ui-dark .aplayer {
-  background: rgba(30, 144, 255, 0.05);
-  color: #ecedee !important;
+.aplayer {
+  background: var(--hope-colors-neutral2);
+  color: var(--hope-colors-neutral12) !important;
 }
-.hope-ui-dark .aplayer .aplayer-info .aplayer-music .aplayer-author {
-  color: #ddd;
+.aplayer-body .aplayer-pic {
+  background-color: unset !important;
 }
-.hope-ui-dark .aplayer .aplayer-list ol li:hover {
-  background: #505050;
+.aplayer .aplayer-info .aplayer-music .aplayer-author {
+  color: var(--hope-colors-neutral11);
 }
-.hope-ui-dark .aplayer .aplayer-list ol li.aplayer-list-light {
-  background: #505050;
+.aplayer .aplayer-list ol li:hover {
+  background: var(--hope-colors-neutral4);
 }
-.hope-ui-dark .aplayer .aplayer-list ol li .aplayer-list-author {
-  color: #aaa;
+.aplayer .aplayer-list ol li.aplayer-list-light {
+  background: var(--hope-colors-neutral4);
 }
-.hope-ui-dark .aplayer .aplayer-list ol li .aplayer-list-index {
-  color: #cfcfcf;
+.aplayer .aplayer-list ol li .aplayer-list-author {
+  color: var(--hope-colors-neutral9);
 }
-.hope-ui-dark .aplayer .aplayer-lrc:after {
-  background: linear-gradient(
-    180deg,
-    hsl(221deg 33% 17% / 0%) 0,
-    hsl(221deg 33% 17%)
-  );
+.aplayer .aplayer-list ol li .aplayer-list-index {
+  color: var(--hope-colors-neutral10);
 }
-.hope-ui-dark .aplayer .aplayer-lrc:before {
-  background: linear-gradient(180deg, #1d263a 0, hsl(0deg 0% 0% / 0%));
+.aplayer .aplayer-lrc:after {
+  background: none;
 }
-.hope-ui-dark
-  .aplayer
-  .aplayer-info
-  .aplayer-controller
-  .aplayer-time
-  .aplayer-icon
-  path {
-  fill: #fff;
+.aplayer .aplayer-lrc:before {
+  background: none;
 }
-.hope-ui-dark .aplayer .aplayer-lrc p {
-  color: #fff;
+.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon path {
+  fill: var(--hope-colors-neutral12);
 }
-.hope-ui-dark .aplayer .aplayer-list ol li {
-  border-top: 1px solid #2e2e2e;
+.aplayer .aplayer-lrc p {
+  color: var(--hope-colors-neutral12);
 }
-.hope-ui-dark .aplayer.aplayer-withlist .aplayer-info {
-  border-bottom: 1px solid #404040;
+.aplayer .aplayer-list ol li {
+  border-top: 1px solid var(--hope-colors-neutral6);
 }
-.hope-ui-dark .aplayer {
-  color: var(--hty-text-color);
+.aplayer.aplayer-withlist .aplayer-info {
+  border-bottom: 1px solid var(--hope-colors-neutral7);
 }

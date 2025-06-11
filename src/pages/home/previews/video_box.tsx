@@ -59,6 +59,7 @@ export const players: { icon: string; name: string; scheme: string }[] = [
     name: "iPlay",
     scheme: "iplay://play/any?type=url&url=$bdurl",
   },
+  { icon: "mpv", name: "mpv", scheme: "mpv://$edurl" },
 ]
 
 export const AutoHeightPlugin = (player: Artplayer) => {

@@ -22,6 +22,8 @@
     "root_folder_id": "根文件夹ID"
   },
   "115 Open": {
+    "limit_rate": "限制速率",
+    "limit_rate-tips": "限制所有 api 请求率 ([limit]r/1s)",
     "order_by": "排序",
     "order_bys": {
       "file_name": "文件名称",
@@ -87,6 +89,8 @@
     "cloud_id": "Cloud id",
     "custom_upload_part_size": "自定义上传分片大小",
     "custom_upload_part_size-tips": "0 为自动设置",
+    "report_real_size": "报告真实大小",
+    "report_real_size-tips": "启用在上传时报告真实文件大小",
     "root_folder_id": "根文件夹ID",
     "type": "类型",
     "types": {
@@ -94,7 +98,9 @@
       "group": "共享群",
       "personal": "个人云",
       "personal_new": "新的个人盘"
-    }
+    },
+    "use_large_thumbnail": "使用大缩略图",
+    "use_large_thumbnail-tips": "启用图像使用大缩略图"
   },
   "189Cloud": {
     "cookie": "Cookie",
@@ -240,6 +246,16 @@
     "share_id": "分享ID",
     "share_pwd": "分享密码"
   },
+  "Azure Blob Storage": {
+    "access_key": "访问密钥",
+    "access_key-tips": "用于身份验证的 Azure 存储的访问密钥。https://learn.microsoft.com/azure/storage/common/storage-account-keys-management",
+    "container_name": "容器名称",
+    "container_name-tips": "数据存储容器 (在 Azure 存储界面 数据存储>容器 中创建)。https://learn.microsoft.com/azure/storage/blobs/blob-containers-portal",
+    "endpoint": "Endpoint",
+    "endpoint-tips": "例如：https://accountname.blob.core.windows.net/。Azure Storage的完整端点URL，包括唯一的存储帐户名称(3~24 个数字和小写字母)。",
+    "sign_url_expire": "签名链接有效期",
+    "sign_url_expire-tips": "SAS URLs 的到期时间，以小时为单位。"
+  },
   "BaiduNetdisk": {
     "client_id": "客户端ID",
     "client_secret": "客户端密钥",
@@ -249,9 +265,11 @@
     "download_api": "下载接口",
     "download_apis": {
       "crack": "非官方",
+      "crack_video": "非官方视频专用接口",
       "official": "官方"
     },
     "low_bandwith_upload_mode": "低带宽上传模式",
+    "only_list_video_file": "仅列出视频文件",
     "order_by": "排序",
     "order_bys": {
       "name": "名称",
@@ -301,6 +319,30 @@
     "custom_ua": "自定义UA",
     "enable_thumb_and_folder_size": "启用缩略图和文件夹大小",
     "password": "密码",
+    "root_folder_path": "根文件夹路径",
+    "username": "用户名"
+  },
+  "Cloudreve V4": {
+    "access_token": "访问令牌",
+    "address": "地址",
+    "custom_ua": "自定义UA",
+    "enable_folder_size": "启用文件夹大小",
+    "enable_thumb": "启用缩略图",
+    "enable_version_upload": "启用版本上传",
+    "order_by": "排序",
+    "order_bys": {
+      "created_at": "创建时间",
+      "name": "名称",
+      "size": "大小",
+      "updated_at": "修改时间"
+    },
+    "order_direction": "排序方式",
+    "order_directions": {
+      "asc": "升序",
+      "desc": "降序"
+    },
+    "password": "密码",
+    "refresh_token": "刷新令牌",
     "root_folder_path": "根文件夹路径",
     "username": "用户名"
   },
@@ -361,7 +403,18 @@
   },
   "Doubao": {
     "cookie": "Cookie",
-    "root_folder_id": "根文件夹ID"
+    "download_api": "下载接口",
+    "download_apis": {
+      "get_download_info": "Get download info",
+      "get_file_url": "Get file url"
+    },
+    "root_folder_id": "根文件夹ID",
+    "upload_thread": "上传线程"
+  },
+  "DoubaoShare": {
+    "cookie": "Cookie",
+    "root_folder_path": "根文件夹路径",
+    "share_ids": "分享ID"
   },
   "Dropbox": {
     "client_id": "客户端ID",
@@ -481,6 +534,12 @@
   "IPFS API": {
     "endpoint": "Endpoint",
     "gateway": "网关",
+    "mode": "模式",
+    "modes": {
+      "ipfs": "Ipfs",
+      "ipns": "Ipns",
+      "mfs": "Mfs"
+    },
     "root_folder_path": "根文件夹路径"
   },
   "KodBox": {
@@ -791,6 +850,9 @@
   },
   "Thunder": {
     "captcha_token": "验证码",
+    "credit_key": "信用密钥",
+    "credit_key-tips": "信用密钥，用于登录",
+    "device_id": "设备id",
     "password": "密码",
     "root_folder_id": "根文件夹ID",
     "username": "用户名"
@@ -858,6 +920,8 @@
     "client_id": "客户端ID",
     "client_secret": "客户端密钥",
     "client_version": "客户端版本",
+    "credit_key": "信用密钥",
+    "credit_key-tips": "信用密钥，用于登录",
     "device_id": "设备id",
     "download_user_agent": "下载用户代理",
     "login_type": "登录类型",
@@ -1076,14 +1140,17 @@
     },
     "AliyundriveOpen": {},
     "AliyundriveShare": {},
+    "Azure Blob Storage": {},
     "BaiduNetdisk": {},
     "BaiduPhoto": {},
     "BaiduShare": {},
     "ChaoXingGroupDrive": {},
     "Cloudreve": {},
+    "Cloudreve V4": {},
     "Crypt": {},
     "Doge": {},
     "Doubao": {},
+    "DoubaoShare": {},
     "Dropbox": {},
     "FTP": {},
     "FebBox": {},
@@ -1155,14 +1222,17 @@
     "Aliyundrive": "阿里云盘",
     "AliyundriveOpen": "阿里云盘Open",
     "AliyundriveShare": "阿里云盘分享",
+    "Azure Blob Storage": "Azure Blob 存储",
     "BaiduNetdisk": "百度网盘",
     "BaiduPhoto": "一刻相册",
     "BaiduShare": "百度分享",
     "ChaoXingGroupDrive": "超星小组盘",
     "Cloudreve": "Cloudreve",
+    "Cloudreve V4": "Cloudreve V4",
     "Crypt": "Crypt",
     "Doge": "多吉云",
     "Doubao": "豆包",
+    "DoubaoShare": "豆包分享",
     "Dropbox": "Dropbox",
     "FTP": "FTP",
     "FebBox": "FebBox",

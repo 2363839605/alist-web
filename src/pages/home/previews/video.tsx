@@ -1,7 +1,7 @@
 import { Box } from "@hope-ui/solid"
 import { createSignal, onCleanup, onMount } from "solid-js"
 import { useRouter, useLink } from "~/hooks"
-import { getSettingBool, objStore, password } from "~/store"
+import {getMainColor, getSettingBool, objStore} from "~/store"
 import { ObjType } from "~/types"
 import { ext, fsGet, pathDir, pathJoin, r } from "~/utils"
 import Artplayer from "artplayer"
@@ -10,7 +10,7 @@ import { type Setting } from "artplayer/types/setting"
 import { type Events } from "artplayer/types/events"
 import artplayerPluginDanmuku from "artplayer-plugin-danmuku"
 import artplayerPluginAss from "~/components/artplayer-plugin-ass"
-import flvjs from "flv.js"
+import mpegts from "mpegts.js"
 import Hls from "hls.js"
 import { currentLang } from "~/app/i18n"
 import { AutoHeightPlugin, VideoBox } from "./video_box"
@@ -46,7 +46,7 @@ const Preview = () => {
     }
   }
   let player: Artplayer
-  let flvPlayer: flvjs.Player
+  let flvPlayer: mpegts.Player
   let hlsPlayer: Hls
   let option: Option = {
     id: pathname(),
@@ -61,6 +61,7 @@ const Preview = () => {
     flip: true,
     playbackRate: true,
     aspectRatio: true,
+    screenshot: true,
     setting: true,
     hotkey: true,
     pip: true,
@@ -70,6 +71,7 @@ const Preview = () => {
     subtitleOffset: true,
     miniProgressBar: false,
     playsInline: true,
+    theme: getMainColor(),
     // layers: [],
     // settings: [],
     // contextmenu: [],
@@ -105,11 +107,12 @@ const Preview = () => {
       // @ts-ignore
       "webkit-playsinline": true,
       playsInline: true,
+      crossOrigin: "anonymous",
     },
     type: ext(objStore.obj.name),
     customType: {
       flv: function (video: HTMLMediaElement, url: string) {
-        flvPlayer = flvjs.createPlayer(
+        flvPlayer = mpegts.createPlayer(
           {
             type: "flv",
             url: url,
@@ -137,8 +140,7 @@ const Preview = () => {
     autoOrientation: true,
     airplay: true,
   }
-
-  let subtitle = objStore.related.filter((obj) => {
+  const subtitle = objStore.related.filter((obj) => {
     for (const ext of [".srt", ".ass", ".vtt"]) {
       if (obj.name.endsWith(ext)) {
         return true
@@ -157,8 +159,10 @@ const Preview = () => {
 
   // TODO: add a switch in manage panel to choose whether to enable `libass-wasm`
   const enableEnhanceAss = true
-  let isEnhanceAssMode = false
+
   if (subtitle.length != 0) {
+    let isEnhanceAssMode = false
+
     // set default subtitle
     const defaultSubtitle = subtitle[0]
     if (enableEnhanceAss && ext(defaultSubtitle.name).toLowerCase() === "ass") {
@@ -176,10 +180,7 @@ const Preview = () => {
         escape: false,
       }
     }
-    subtitlePer()
-  }
 
-  function subtitlePer() {
     // render subtitle toggle menu
     const innerMenu: Setting[] = [
       {
@@ -284,12 +285,9 @@ const Preview = () => {
         mode: 0,
         margin: [0, "0%"],
         antiOverlap: false,
-        useWorker: true,
         synchronousPlayback: false,
         lockTime: 5,
         maxLength: 100,
-        minWidth: 200,
-        maxWidth: 400,
         theme: "dark",
         heatmap: true,
       }),
@@ -471,6 +469,14 @@ const Preview = () => {
     player.on("video:ended", () => {
       if (!autoNext()) return
       next_video()
+    })
+    player.on("error", () => {
+      if (player.video.crossOrigin) {
+        console.log(
+          "Error detected. Trying to remove Cross-Origin attribute. Screenshot may not be available.",
+        )
+        player.video.crossOrigin = null
+      }
     })
   })
   onCleanup(() => {
